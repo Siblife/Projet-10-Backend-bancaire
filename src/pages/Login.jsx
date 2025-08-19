@@ -1,52 +1,53 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   return (
     <div>
-      <nav class="main-nav">
-        <a class="main-nav-logo" href="./index.html">
+      <nav className="main-nav">
+        <Link className="main-nav-logo" to="/">
           <img
-            class="main-nav-logo-image"
-            src="./img/argentBankLogo.png"
+            className="main-nav-logo-image"
+            src="src/images/argentBankLogo.png"
             alt="Argent Bank Logo"
           />
-          <h1 class="sr-only">Argent Bank</h1>
-        </a>
+          <h1 className="sr-only">Argent Bank</h1>
+        </Link>
         <div>
-          <a class="main-nav-item" href="./sign-in.html">
-            <i class="fa fa-user-circle"></i>
+          <Link className="main-nav-item" to="/login">
+            <i className="fa fa-user-circle"></i>
             Sign In
-          </a>
+          </Link>
         </div>
       </nav>
-      <main class="main bg-dark">
-        <section class="sign-in-content">
-          <i class="fa fa-user-circle sign-in-icon"></i>
+      <main className="main bg-dark">
+        <section className="sign-in-content">
+          <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
           <form>
-            <div class="input-wrapper">
+            <div className="input-wrapper">
               <label for="username">Username</label>
               <input type="text" id="username" />
             </div>
-            <div class="input-wrapper">
+            <div className="input-wrapper">
               <label for="password">Password</label>
               <input type="password" id="password" />
             </div>
-            <div class="input-remember">
+            <div className="input-remember">
               <input type="checkbox" id="remember-me" />
               <label for="remember-me">Remember me</label>
             </div>
 
-            <a href="./user.html" class="sign-in-button">
+            <Link to="/login" className="sign-in-button">
               Sign In
-            </a>
+            </Link>
 
-            <button class="sign-in-button">Sign In</button>
+            <button className="sign-in-button">Sign In</button>
           </form>
         </section>
       </main>
-      <footer class="footer">
-        <p class="footer-text">Copyright 2020 Argent Bank</p>
+      <footer className="footer">
+        <p className="footer-text">Copyright 2020 Argent Bank</p>
       </footer>
     </div>
   );
