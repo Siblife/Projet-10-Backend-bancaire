@@ -6,7 +6,8 @@ import Home from "./pages/Home.jsx";
 import User from "./pages/User.jsx";
 import Login from "./pages/Login.jsx";
 import { Provider } from "react-redux";
-import store from "./store"; // à créer
+import store from "./store";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -15,7 +16,14 @@ createRoot(document.getElementById("root")).render(
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
-          <Route path="/user" element={<User />} />
+          <Route
+            path="/user"
+            element={
+              <ProtectedRoute>
+                <User />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Provider>
