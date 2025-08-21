@@ -1,8 +1,22 @@
 import React from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 
 export default function Login() {
+const [username, setUsername] = useState([""])
+const [password, setPassword] = useState([""]);
+
+function submit () {
+  fetch("http://localhost:3001/api/v1/user/login", {
+    method: "POST",
+    body: JSON.stringify({ email: username, password: password }),
+  }).then((response) => {
+    response.json().then((data) => {
+      console.log(data);
+    });
+  });
+}
 
 
   return (
@@ -30,22 +44,28 @@ export default function Login() {
           <form>
             <div className="input-wrapper">
               <label for="username">Username</label>
-              <input type="text" id="username" />
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="input"
+                type="text"
+                id="username"
+              />
             </div>
             <div className="input-wrapper">
               <label for="password">Password</label>
-              <input type="password" id="password" />
+              <input value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password" id="password" />
             </div>
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
               <label for="remember-me">Remember me</label>
             </div>
 
-            <Link to="/login" className="sign-in-button">
+            <button onClick={submit} className="sign-in-button">
               Sign In
-            </Link>
-
-            <button className="sign-in-button">Sign In</button>
+            </button>
           </form>
         </section>
       </main>
