@@ -1,23 +1,37 @@
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { login } from "../store/authSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-const [username, setUsername] = useState([""])
-const [password, setPassword] = useState([""]);
+  const [username, setUsername] = useState([""]);
+  const [password, setPassword] = useState([""]);
+  const dispatch = useDispatch();
+  const [error, setError] = useState();
+  const navigate = useNavigate();
 
-function submit () {
-  fetch("http://localhost:3001/api/v1/user/login", {
-    method: "POST",
-    body: JSON.stringify({ email: username, password: password }),
-  }).then((response) => {
-    response.json().then((data) => {
-      console.log(data);
-    });
-  });
-}
-
+  function submit(e) {
+    e.preventDefault();
+    fetch("http://localhost:3001/api/v1/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: username, password: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.body && data.body.token) {
+          dispatch(login(data.body.token));
+          // Rediriger vers la page profil
+          navigate("/user");
+        } else {
+          // Gérer l’erreur (afficher un message)
+          setError("Identifiants invalides");
+        }
+      })
+      .catch(() => setError("Erreur de connexion au serveur"));
+  }
 
   return (
     <div>
@@ -41,7 +55,8 @@ function submit () {
         <section className="sign-in-content">
           <i className="fa fa-user-circle sign-in-icon"></i>
           <h1>Sign In</h1>
-          <form>
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          <form onSubmit={submit}>
             <div className="input-wrapper">
               <label for="username">Username</label>
               <input
@@ -54,16 +69,19 @@ function submit () {
             </div>
             <div className="input-wrapper">
               <label for="password">Password</label>
-              <input value={password}
+              <input
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                type="password" id="password" />
+                type="password"
+                id="password"
+              />
             </div>
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
               <label for="remember-me">Remember me</label>
             </div>
 
-            <button onClick={submit} className="sign-in-button">
+            <button onClick={submit} type="submit" className="sign-in-button">
               Sign In
             </button>
           </form>
