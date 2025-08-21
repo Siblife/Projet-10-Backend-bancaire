@@ -58,7 +58,7 @@ export default function Login() {
           {error && <div style={{ color: "red" }}>{error}</div>}
           <form onSubmit={submit}>
             <div className="input-wrapper">
-              <label for="username">Username</label>
+              <label htmlFor="username">Username</label>
               <input
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
@@ -68,7 +68,7 @@ export default function Login() {
               />
             </div>
             <div className="input-wrapper">
-              <label for="password">Password</label>
+              <label htmlFor="password">Password</label>
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -78,7 +78,7 @@ export default function Login() {
             </div>
             <div className="input-remember">
               <input type="checkbox" id="remember-me" />
-              <label for="remember-me">Remember me</label>
+              <label htmlFor="remember-me">Remember me</label>
             </div>
 
             <button onClick={submit} type="submit" className="sign-in-button">
