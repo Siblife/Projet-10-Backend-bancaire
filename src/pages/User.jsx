@@ -2,14 +2,32 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { updateUsername } from "../store/authSlice";
+import { useEffect } from "react";
+import { setUserProfile } from "../store/authSlice";
 
 export default function User() {
-  const [editMode, setEditMode] = useState(false);
-  const username = useSelector((state) => state.auth.user.username);
-  const [newUsername, setNewUsername] = useState(username); // Ici je recupere l'username depuis redux
-
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
+  const user = useSelector((state) => state.auth.user);
+  const [editMode, setEditMode] = useState(false);
+  const [newUsername, setNewUsername] = useState(user?.username || "");
+
+  useEffect(() => {
+    if (!token) return;
+    fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === 200) {
+          dispatch(setUserProfile(data.body));
+        }
+      });
+  }, [token, dispatch]);
 
   function handleSave(e) {
     e.preventDefault();
@@ -46,7 +64,7 @@ export default function User() {
         <div>
           <Link className="main-nav-item" to="/user">
             <i className="fa fa-user-circle"></i>
-            {username}
+            {user?.username}
           </Link>
           <Link className="main-nav-item" to="/">
             <i className="fa fa-sign-out"></i>
@@ -58,14 +76,30 @@ export default function User() {
         <div className="header">
           {editMode ? (
             <form onSubmit={handleSave}>
-              <label>
-                User name:
-                <input
-                  type="text"
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                />
-              </label>
+              <label htmlFor="username">User name:</label>
+              <input
+                id="username"
+                type="text"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+              />
+
+              <label htmlFor="firstName">First name:</label>
+              <input
+                id="firstName"
+                type="text"
+                value={user?.firstName || ""}
+                disabled
+              />
+
+              <label htmlFor="lastName">Last name:</label>
+              <input
+                id="lastName"
+                type="text"
+                value={user?.lastName || ""}
+                disabled
+              />
+
               <button type="submit">Save</button>
               <button type="button" onClick={() => setEditMode(false)}>
                 Cancel
@@ -76,7 +110,7 @@ export default function User() {
               <h1>
                 Welcome back
                 <br />
-                {username}!
+                {user?.username}!
               </h1>
               <button className="edit-button" onClick={() => setEditMode(true)}>
                 Edit Name

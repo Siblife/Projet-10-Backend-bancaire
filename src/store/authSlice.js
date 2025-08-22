@@ -15,6 +15,11 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.token = action.payload;
       state.isAuthenticated = true;
+      state.user = {
+        username: action.payload.username,
+        firstname: action.payload.firstName,
+        lastname: action.payload.lastName
+      };
     },
     logout: (state) => {
       state.token = null;
@@ -22,9 +27,16 @@ const authSlice = createSlice({
     },
     updateUsername: (state, action) => {
       state.user.username = action.payload;
-    }
+    },
+    setUserProfile: (state, action) => {
+      state.user = {
+        username: action.payload.username,
+        firstName: action.payload.firstName,
+        lastName: action.payload.lastName
+      };
+    },
   },
 });
 
-export const { login, logout, updateUsername } = authSlice.actions;
+export const { login, logout, updateUsername, setUserProfile } = authSlice.actions;
 export default authSlice.reducer;
