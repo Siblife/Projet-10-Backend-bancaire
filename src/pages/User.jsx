@@ -75,7 +75,7 @@ export default function User() {
       <main className="main bg-dark">
         <div className="header">
           {editMode ? (
-            <form onSubmit={handleSave}>
+            <form className="form_center" onSubmit={handleSave}>
               <label htmlFor="username">User name:</label>
               <input
                 id="username"
