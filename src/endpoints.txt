@@ -1,0 +1,23 @@
+End points a afficher dans le fichier YAML :
+
+1 - Affichage de la liste des transactions : 
+    Voir toutes les transactions du compte.
+        Endpoint : 
+            GET api/v1/accounts/{accountId}/transacstions
+        
+        Parametre : accountId
+
+2 - Affichage du detail de la transaction : 
+    CLiquer sur une transaction pour voir ses détails (type, catégorie ...)
+        Endpoint :
+            GET api/v1/accounts/{accountId}/transacstions/{transactionId}
+
+        Parametre : accountId, transactionId
+
+3 - Modifier un ou plusieurs détails d'une transaction :
+    Cliquer sur le crayon pour modifier une transaction
+        Endpoint :
+        PATCH /api/v1/accounts/{accountId}/transactions/{transactionId}
+
+        Parametre : accountId, transactionId
+        Body(JSON) : {"category": "",""}

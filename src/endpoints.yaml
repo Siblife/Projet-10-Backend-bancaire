@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: ArgentBank Transactions API
+  version: 1.0.0
+  description: API pour la gestion des transactions bancaires
+
+paths:
+  /api/v1/accounts/{accountId}/transactions:
+    get:
+      summary: Liste des transactions du mois en cours pour un compte
+      description: Retourne toutes les transactions du mois en cours pour le compte spécifié.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+          description: ID du compte bancaire
+      responses:
+        '200':
+          description: Liste des transactions trouvée
+        '404':
+          description: Compte non trouvé
+
+  /api/v1/accounts/{accountId}/transactions/{transactionId}:
+    get:
+      summary: Détail d'une transaction
+      description: Retourne les détails d'une transaction spécifique.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+          description: ID du compte bancaire
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: ID de la transaction
+      responses:
+        '200':
+          description: Détail de la transaction
+        '404':
+          description: Transaction non trouvée
+
+    patch:
+      summary: Modifier les informations d'une transaction
+      description: Permet de modifier la catégorie ou la note d'une transaction.
+      parameters:
+        - in: path
+          name: accountId
+          required: true
+          schema:
+            type: string
+          description: ID du compte bancaire
+        - in: path
+          name: transactionId
+          required: true
+          schema:
+            type: string
+          description: ID de la transaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                category:
+                  type: string
+                  description: Nouvelle catégorie de la transaction
+                note:
+                  type: string
+                  description: Note ou description de la transaction
+      responses:
+        '200':
+          description: Transaction modifiée
+        '400':
+          description: Données invalides
+        '404':
+          description: Transaction non trouvée
